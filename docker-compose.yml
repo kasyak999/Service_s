@@ -1,0 +1,20 @@
+volumes:
+  db_data:
+services:
+  db:
+    image: postgres:13
+    env_file: .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+  backend:
+    build: ./src/
+    command: >
+      sh -c "alembic upgrade head &&
+      uvicorn app.main:app --host 0.0.0.0 --port 7000 --proxy-headers"
+    depends_on:
+      - db
+    env_file: .env
+    ports:
+      - "9000:7000"

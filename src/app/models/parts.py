@@ -6,26 +6,25 @@ import enum
 
 
 class RequestStatus(str, enum.Enum):
-    DRAFT = "Создано АСЦ"
+    CREATED = "Создано"
     IN_REVIEW = "На рассмотрении"
-    APPROVED = "Собирается"
-    SHIPPED = "Отгружена / В пути"
-    COMPLETED = "Получено АСЦ"
+    COLLECTING = "Собирается"
+    SHIPPED = "Отправлено"
 
 
 class PartsRequest(Base):
     """Модель запросов на запчасти"""
     status: Mapped[RequestStatus] = mapped_column(
         SQLEnum(RequestStatus, native_enum=False),
-        default=RequestStatus.DRAFT,
+        default=RequestStatus.CREATED,
         comment='Статус запроса')
     is_urgent: Mapped[bool] = mapped_column(
         default=False,
-        comment='Срочный/гарантийный ремонт')
+        comment='Платный/гарантийный ремонт')
     work_order_number: Mapped[str | None] = mapped_column(
         String(100),
         nullable=True,
-        comment='№ акта приема/заказа АСЦ')
+        comment='№ акта')
     device_model: Mapped[str] = mapped_column(
         String(255),
         nullable=False,

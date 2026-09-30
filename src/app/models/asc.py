@@ -24,7 +24,7 @@ class ServiceCenter(Base):
     email: Mapped[str] = mapped_column(
         String(100),
         unique=False,
-        comment='Email для уведомлений'
+        comment='Email'
     )
     address: Mapped[str] = mapped_column(
         Text,

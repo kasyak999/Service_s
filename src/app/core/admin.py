@@ -55,6 +55,7 @@ class UserAdmin(ModelView, model=User):
 class ServiceCenterAdmin(ModelView, model=ServiceCenter):
     """Административный интерфейс для модели ServiceCenter."""
     column_list = [
+        ServiceCenter.user,
         ServiceCenter.name,
         ServiceCenter.contact_person,
         ServiceCenter.phone,
@@ -66,20 +67,24 @@ class ServiceCenterAdmin(ModelView, model=ServiceCenter):
     name_plural = "Сервисные центры"
     column_labels = {**get_column_comments(ServiceCenter)}
     column_formatters = {
-        ServiceCenter.created_at: lambda m, _: to_moscow(m.created_at)}
+        ServiceCenter.created_at: lambda m, _: to_moscow(m.created_at),
+        ServiceCenter.address: lambda m, _: (
+            m.address[:30] + "..."
+            if m.address and len(m.address) > 30 else m.address
+        ),
+    }
     column_formatters_detail = column_formatters
 
 
 class PartsRequestAdmin(ModelView, model=PartsRequest):
     """Административный интерфейс для модели PartsRequest."""
     column_list = [
-        PartsRequest.id,
-        PartsRequest.asc_id,
+        PartsRequest.asc,
         PartsRequest.status,
         PartsRequest.is_urgent,
+        PartsRequest.created_at,
         PartsRequest.work_order_number,
         PartsRequest.device_model,
-        PartsRequest.serial_number,
         PartsRequest.comment_asc,
     ]
     name = "запрос на запчасти"
@@ -87,7 +92,11 @@ class PartsRequestAdmin(ModelView, model=PartsRequest):
     column_labels = {**get_column_comments(PartsRequest)}
     column_formatters = {
         PartsRequest.created_at: lambda m, _: to_moscow(m.created_at),
-        PartsRequest.status: lambda obj, name: obj.status.value
+        PartsRequest.status: lambda obj, name: obj.status.value,
+        PartsRequest.comment_asc: lambda m, _: (
+                m.comment_asc[:30] + "..."
+                if m.comment_asc and len(m.comment_asc) > 30 else m.comment_asc
+            ),
     }
     column_formatters_detail = column_formatters
 
