@@ -6,15 +6,13 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 class User(Base):
     """Модель пользователя."""
     username: Mapped[str] = mapped_column(
-        nullable=True,
-        comment='Username',
+        unique=True,
+        comment='Логин',
     )
     is_superuser: Mapped[bool] = mapped_column(
-        default=False,
-        comment='root',
+        comment='Роль суперпользователя',
     )
     hashed_password: Mapped[str] = mapped_column(
-        nullable=True,
         comment='Хеш пароля',
     )
     asc: Mapped[list["ServiceCenter"]] = relationship(  # noqa: F821

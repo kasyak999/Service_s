@@ -1,7 +1,8 @@
 from app.core.db import Base
 from sqlalchemy import BigInteger
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Text, Integer, ForeignKey, Enum as SQLEnum
+from sqlalchemy import (
+    String, Text, Integer, ForeignKey, Enum as SQLEnum, JSON)
 import enum
 
 
@@ -19,24 +20,26 @@ class PartsRequest(Base):
         default=RequestStatus.CREATED,
         comment='Статус запроса')
     is_urgent: Mapped[bool] = mapped_column(
-        default=False,
         comment='Платный/гарантийный ремонт')
-    work_order_number: Mapped[str | None] = mapped_column(
+    work_order_number: Mapped[str] = mapped_column(
         String(100),
-        nullable=True,
         comment='№ акта')
     device_model: Mapped[str] = mapped_column(
         String(255),
-        nullable=False,
         comment='Модель устройства')
     serial_number: Mapped[str] = mapped_column(
         String(100),
-        nullable=False,
         comment='Серийный номер техники')
     comment_asc: Mapped[str | None] = mapped_column(
         Text,
         nullable=True,
         comment='Примечание')
+    files: Mapped[list[str]] = mapped_column(
+        JSON,
+        default=list,
+        nullable=True,
+        comment='Акты и фотографии'
+    )
     asc_id: Mapped[int] = mapped_column(
         ForeignKey('servicecenter.id', ondelete="CASCADE"),
         nullable=False,

@@ -8,27 +8,23 @@ class ServiceCenter(Base):
     """Модель сервисных центров"""
     name: Mapped[str] = mapped_column(
         String(255),
-        nullable=False,
+        unique=True,
         comment='Название АСЦ',
     )
-    contact_person: Mapped[str | None] = mapped_column(
+    contact_person: Mapped[str] = mapped_column(
         String(255),
-        nullable=False,
         comment='Контактное лицо',
     )
     phone: Mapped[str] = mapped_column(
         String(20),
-        nullable=False,
         comment='Номер телефона'
     )
     email: Mapped[str] = mapped_column(
         String(100),
-        unique=False,
         comment='Email'
     )
     address: Mapped[str] = mapped_column(
         Text,
-        nullable=False,
         comment='Адрес доставки деталей'
     )
     is_active: Mapped[bool] = mapped_column(

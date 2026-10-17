@@ -1,5 +1,6 @@
 from datetime import timezone
 from zoneinfo import ZoneInfo
+from wtforms import SelectField
 
 from sqlalchemy import inspect
 from sqladmin import ModelView
@@ -7,7 +8,6 @@ from sqladmin.filters import BooleanFilter
 
 from app.models import User, PartsRequest, ServiceCenter
 from app.models.parts import RequestStatus
-from wtforms import SelectField
 
 
 def to_moscow(dt):

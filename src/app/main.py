@@ -4,9 +4,12 @@ from sqladmin import Admin
 from app.core.config import settings
 from app.core.db import engine
 from app.core.admin import UserAdmin, PartsRequestAdmin, ServiceCenterAdmin
+from app.api.routers import api_router
 
 
 app = FastAPI()
+app.include_router(api_router)
+
 admin = Admin(
     app,
     engine,
@@ -17,7 +20,3 @@ admin = Admin(
 admin.add_view(UserAdmin)
 admin.add_view(PartsRequestAdmin)
 admin.add_view(ServiceCenterAdmin)
-
-@app.get('/')
-def read_root():
-    return {'Hello': 'FastAPI1111111111'}
